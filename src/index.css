@@ -18,19 +18,21 @@ code {
   align-items: center;
   flex-wrap: wrap;
   padding: 15px;
-  width: 600px;
+  width: 650px;
   max-width: 90%;
   margin: 0 auto;
 }
 
 .form {
-  width: 600px;
-  max-width: 100%;
+  width: 100%;
 }
 .input {
   padding: 10px 15px;
   width: 90%;
   margin-bottom: 20px;
+}
+.results {
+  margin: 5px 0px;
 }
 
 .button {
@@ -43,4 +45,5 @@ code {
   font-size: 14px;
   cursor: pointer;
   margin-bottom: 20px;
+  margin-top: 10px;
 }
