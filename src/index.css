@@ -30,6 +30,10 @@ code {
   padding: 10px 15px;
   width: 90%;
   margin-bottom: 20px;
+  font-size: 16px;
+}
+.input:focus {
+  outline: none;
 }
 .results {
   margin: 5px 0px;

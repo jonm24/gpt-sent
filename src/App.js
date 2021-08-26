@@ -8,7 +8,6 @@ const engines = {
   "babbage": "Good at: Moderate classification, semantic search classification, Cost: $$", 
   "ada": "Good at: Parsing text, simple classification, address correction, keywords, Cost: $"
 }
-const openai = new OpenAI(process.env.REACT_APP_OPENAI);
 
 function App() {
   const [input, setInput] = useState("");
@@ -19,10 +18,18 @@ function App() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (input === "") {
+      document.getElementById("input").style.border = "2px solid red";
+      setTimeout(() => {
+        document.getElementById("input").style.border = "1px solid black"; 
+      }, 2000)
+      return
+    }
     document.getElementById("input").value = "";
     setOutput("loading...")
 
     try {
+      const openai = new OpenAI(process.env.REACT_APP_OPENAI);
       const gptRes = await openai.complete({
         engine: inputEngine,
         prompt: `This is a tweet sentiment classifier\n\n\nTweet: "I loved the new Batman movie!"\nSentiment: Positive\n###\nTweet: "I hate it when my phone battery dies."\nSentiment: Negative\n###\nTweet: "My day has been 👍"\nSentiment: Positive\n###\nTweet: "This is the link to the article"\nSentiment: Neutral\n###\nTweet: "${input}"\nSentiment:`,
