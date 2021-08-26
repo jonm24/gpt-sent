@@ -1,3 +1,7 @@
+# sentinment analysis using GPT-3
+hosted here: [gpt-sent.vercel.app](https://gpt-sent.vercel.app)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
