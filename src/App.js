@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import OpenAI from 'openai-api';
 import './index.css';
 
@@ -34,9 +34,9 @@ function App() {
   }
 
   return (
-    <Fragment>
-      <h1>sentiment analysis using GPT-3</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <h2>sentiment analysis using GPT-3</h2>
+      <form className='form' onSubmit={handleSubmit}>
         <h3>enter a sentence:</h3>
         <input 
           id="input" 
@@ -49,9 +49,9 @@ function App() {
           <strong>analyze</strong>
         </button>
       </form>
-      <div style={{marginBottom: "10px"}}><strong>sentence:</strong> {input}</div>
-      <div><strong>sentiment:</strong> {output}</div>
-    </Fragment>
+      <div style={{marginBottom: "10px", alignSelf: "flex-start"}}><strong>sentence:</strong> {input}</div>
+      <div style={{alignSelf: "flex-start"}}><strong>sentiment:</strong> {output}</div>
+    </div>
   );
 }
 
