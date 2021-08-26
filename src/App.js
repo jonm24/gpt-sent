@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div className="container">
-      <h2>sentiment analysis using GPT-3</h2>
+      <h2 style={{padding: "0px 5px"}}>sentiment analysis using GPT-3</h2>
       <form className='form' onSubmit={handleSubmit}>
         <h3>enter a sentence:</h3>
         <input 
