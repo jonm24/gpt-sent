@@ -12,8 +12,7 @@ const engines = {
 function App() {
   const [input, setInput] = useState("");
   const [inputEngine, setInputEngine] = useState("curie");
-  const [output, setOutput] = useState("");
-  const [outputEngine, setOutputEngine] = useState("");
+  const [output, setOutput] = useState({text: "", sent: "", model: ""});
   const [error, setError] = useState(null);
 
   async function handleSubmit(e) {
@@ -25,9 +24,8 @@ function App() {
       }, 2000)
       return
     }
-    document.getElementById("input").value = "";
-    setOutput("loading...")
-
+    setOutput({text: input, sent: "loading...", model: "loading..."})
+    setInput("")
     try {
       const openai = new OpenAI(process.env.REACT_APP_OPENAI);
       const gptRes = await openai.complete({
@@ -40,25 +38,14 @@ function App() {
         presencePenalty: 0.0,
         stop: ["###"]
       })
-      setOutput(gptRes.data.choices[0].text);
-      setOutputEngine(gptRes.data.model);
+      setOutput({text: input, sent: gptRes.data.choices[0].text, model: gptRes.data.model});
     } catch (err) {
       delete err.config
       delete err.stack
       setError(err)
     }
   }
-
-  function handleChange(e) {
-    setInput(e.target.value)
-    if (output !== "") {
-      setOutput("");
-    }
-    if (outputEngine !== "") {
-      setOutputEngine("");
-    }
-  }
-
+  
   return (
     <div className="container">
       <h2 style={{padding: "0px 5px"}}>sentiment analysis using GPT-3</h2>
@@ -66,7 +53,8 @@ function App() {
         <h3>enter a sentence:</h3>
         <input 
           id="input" 
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
           className="input">
         </input>
         <div style={{display: "flex", flexWrap: "wrap", alignItems: "baseline"}}>
@@ -92,9 +80,9 @@ function App() {
         <div style={{alignSelf: "flex-start"}}>
           <div><strong>results:</strong></div>
           <ul>
-            <li className="results"><strong>sentence:</strong> {input}</li>
-            <li className="results"><strong>sentiment:</strong> {output}</li>
-            <li className="results"><strong>model used:</strong> {outputEngine}</li>
+            <li className="results"><strong>sentence:</strong> {output.text}</li>
+            <li className="results"><strong>sentiment:</strong> {output.sent}</li>
+            <li className="results"><strong>model used:</strong> {output.model}</li>
           </ul>
         </div>
         : // catch error
