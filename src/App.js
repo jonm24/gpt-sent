@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import OpenAI from 'openai-api';
 import './index.css';
+import { instructSent } from './prompts/instructSent';
+import { baseSent } from './prompts/baseSent';
 
 const engines = {
   "curie": "Good at: Language translation, complex classification, text sentiment, summarization, Cost: $$$", 
   "davinci": "(Best Overall) Good at: Complex intent, cause and effect, summarization for audience, Cost: $$$$",
   "babbage": "Good at: Moderate classification, semantic search classification, Cost: $$", 
-  "ada": "Good at: Parsing text, simple classification, address correction, keywords, Cost: $"
+  "ada": "Good at: Parsing text, simple classification, address correction, keywords, Cost: $",
+  "davinci-instruct-beta": "Base davinci but better at following instructions",
+  "curie-instruct-beta": "Base curie but better at following instructions"
 }
 
 function App() {
@@ -30,7 +34,7 @@ function App() {
       const openai = new OpenAI(process.env.REACT_APP_OPENAI);
       const gptRes = await openai.complete({
         engine: inputEngine,
-        prompt: `This is a tweet sentiment classifier\n\n\nTweet: "I loved the new Batman movie!"\nSentiment: Positive\n###\nTweet: "I hate it when my phone battery dies."\nSentiment: Negative\n###\nTweet: "My day has been 👍"\nSentiment: Positive\n###\nTweet: "This is the link to the article"\nSentiment: Neutral\n###\nTweet: "${input}"\nSentiment:`,
+        prompt: inputEngine.includes("instruct") ? instructSent(input) : baseSent(input),
         temperature: 0.3,
         maxTokens: 60,
         topP: 1.0,
@@ -45,7 +49,7 @@ function App() {
       setError(err)
     }
   }
-  
+
   return (
     <div className="container">
       <h2 style={{padding: "0px 5px"}}>sentiment analysis using GPT-3</h2>
@@ -66,6 +70,8 @@ function App() {
             <option value="davinci">davinci</option>
             <option value="babbage">babbage</option>
             <option value="ada">ada</option>
+            <option value="davinci-instruct-beta">davinci-instruct-beta</option>
+            <option value="curie-instruct-beta">curie-instruct-beta</option>
           </select>
           <span style={{margin: "0px 0px 10px 10px", fontSize: '11px'}}>{engines[inputEngine]}</span>
         </div>
